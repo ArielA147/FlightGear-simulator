@@ -13,7 +13,6 @@ class Expression {
 public:
     // Evaluate the expression and return the result.
     virtual double calculate() = 0;
-    virtual ~Expression(){}
 };
 
 #endif //PROJECT EXPRESSION_H

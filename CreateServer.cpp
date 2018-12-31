@@ -4,13 +4,8 @@
 
 #include <iostream>
 #include <mutex>
-#include <thread>
 #include "CreateServer.h"
 #include "CommandDataBase.h"
-#include "BindValueTable.h"
-#include "BindTable.h"
-#include "SymbolTable.h"
-#include "MutexClass.h"
 
 CreateServer::CreateServer(int _port, int _waitTime) : _port(_port),
                                                        _waitTime(_waitTime) {}
@@ -51,16 +46,18 @@ void CreateServer::execute() {
 
 
     /* Accept actual connection from the client */
-    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr,
-                       (socklen_t *) &clilen);
+    newsockfd = accept(sockfd, (struct sockaddr *) &cli_addr, (socklen_t *) &clilen);
 
     if (newsockfd < 0) {
         perror("ERROR on accept");
         throw 0; // error in accepting socket
     }
+//    mutex mtx ;
 
     while (true) { ///todo : to lock
-        cout << "in the while loop of the server" << endl;
+
+//        mtx.lock();
+
         /* If connection is established then start communicating */
         bzero(buffer, 256);
         n = read(newsockfd, buffer, 255);
@@ -73,153 +70,36 @@ void CreateServer::execute() {
         cout << buffer << endl;
 
         settingPathMapWithBuffer(buffer);
-        cout<<"back to the server while loop"<<endl;
 
         if (n < 0) {
             perror("ERROR writing to socket");
             throw 0; // cant write ti socket
         }
-//        cout << "now sleeping " <<endl;
-
-        CreateServer::updateDataBase();
 //        mtx.unlock();
-        cout << "now while loop of the serverwill go to sleep" << endl;
-        usleep((1 / this->_waitTime) * 1000);
+        //todo :: unlock
+        sleep (1/this->_waitTime);
+        cout << "now sleeping " <<endl;
     }
 }
 
-void CreateServer::settingPathMapWithBuffer(const char *buffer)  {
-//    pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
- //   pthread_mutex_lock(mutex);
-    cout << "setxmlMap lock" << endl;
+void CreateServer::settingPathMapWithBuffer(const char *buffer) const {
     Lexer r;
     string cur_buffer_str(buffer);
 
-    vector<string> cur_buffer_v = r.baseSplit(cur_buffer_str, ',');
-    vector<string> pathListByOrder = getXmlPathKeyByXmlOrder();
-
+    vector<string> cur_buffer_v=r.baseSplit(cur_buffer_str, ',');
+    CommandDataBase cdm;
+    vector<string> pathListByOrder = cdm.getXmlPathKeyByXmlOrder();
 
     for (int i = 0; i < cur_buffer_v.size(); ++i) {
-        cout << "in for loop in number " + to_string(i) << endl;
-        string s1 = pathListByOrder[i];
-        double d1 = stod(cur_buffer_v[i]);
-        setXmlPathMap(s1, d1);
-    }
-    cout << "done the setting path map" << endl;
-   // pthread_mutex_unlock(mutex);
-    cout << "setxmlMap unlock" << endl;
-}
 
-void CreateServer::updateDataBase() {
-    cout <<"updateDataBase - befor locking"<<endl;
-    pthread_mutex_t *mutex = MutexClass::getInstance()->getMutex();
-    //lock_guard<pthread_mutex_t> lock(*mutex);
-    pthread_mutex_lock(mutex);
-    cout <<"updateDataBase - after locking"<<endl;
-    SymbolTable *symbolTable = SymbolTable::instance();
-    BindTable *bindTable = BindTable::instance();
-    BindValueTable *bindValueTable = BindValueTable::instance();
-
-    cout << "------------------------------------------------------------"
-         << endl;
-
-    for (auto key : symbolTable->getVarTable()) {
-        string path = "";
-        if (bindTable->getBIndTable().count(key.first) == 1) {
-            path = bindTable->getValue(key.first);
-            cout << "the path we will update " + path << endl;
-
+            string s1 = pathListByOrder[i];
+            double d1 = stod(cur_buffer_v[i]);
+            if(s1 == "/controls/flight/rudder"){
+                cout << "the value from the budder from the creating the "
+                        "serer - lets check what is in here"
+                        ""<<endl;
+                cout << "the double value is : "+ to_string(d1)<<endl;
+            }
+            cdm.setXmlPathMap(s1, d1);
         }
-        cout << "next if plz" << endl;
-        if (bindValueTable->getBIndTable().count(path)) {
-            cout << "in if plz" << endl;
-            double value = bindValueTable->getValue(path);
-            cout << "update " + path + " :" + to_string(value) << endl;
-            cout << "before setting the value in the symbolTable" << endl;
-            symbolTable->setValue(key.first, value);
-            cout << "after setting the value in the symbolTable" << endl;
-        }
-    }
-    if (SymbolTable::instance()->getVarTable().count("rpm") == 1)
-        cout << "plz be not zero : " + to_string(SymbolTable::instance()
-                                                         ->getValue("rpm"))
-             << endl;
-
-    if (SymbolTable::instance()->getVarTable().count("h0") == 1)
-        cout << "h0 : " + to_string(SymbolTable::instance()
-                                            ->getValue("h0"))
-             << endl;
-
-    if (SymbolTable::instance()->getVarTable().count("heading") == 1)
-        cout << "heading : " + to_string(SymbolTable::instance()
-                                                 ->getValue("heading"))
-             << endl;
-
-    if (SymbolTable::instance()->getVarTable().count("rudder") == 1)
-        cout << "rudder : " + to_string(SymbolTable::instance()
-                                                ->getValue("rudder"))
-             << endl;
-
-    pthread_mutex_unlock(mutex);
-}
-
-
-vector<string> CreateServer::getXmlPathKeyByXmlOrder() {
-    vector<string> xmlPathInOrder;
-    xmlPathInOrder.push_back(
-            "/instrumentation/airspeed-indicator/indicated-speed-kt");
-    xmlPathInOrder.push_back(
-            "/instrumentation/altimeter/indicated-altitude-ft");
-    xmlPathInOrder.push_back("/instrumentation/altimeter/pressure-alt-ft");
-    xmlPathInOrder.push_back(
-            "/instrumentation/attitude-indicator/indicated-pitch-deg");
-    xmlPathInOrder.push_back(
-            "/instrumentation/attitude-indicator/indicated-roll-deg");
-    xmlPathInOrder.push_back(
-            "/instrumentation/attitude-indicator/internal-pitch-deg");
-    xmlPathInOrder.push_back(
-            "/instrumentation/attitude-indicator/internal-roll-deg");
-    xmlPathInOrder.push_back("/instrumentation/encoder/indicated-altitude-ft");
-    xmlPathInOrder.push_back("/instrumentation/encoder/pressure-alt-ft");
-    xmlPathInOrder.push_back("/instrumentation/gps/indicated-altitude-ft");
-    xmlPathInOrder.push_back("/instrumentation/gps/indicated-ground-speed-kt");
-    xmlPathInOrder.push_back("/instrumentation/gps/indicated-vertical-speed");
-    xmlPathInOrder.push_back(
-            "/instrumentation/heading-indicator/indicated-heading-deg");
-    xmlPathInOrder.push_back(
-            "/instrumentation/magnetic-compass/indicated-heading-deg");
-    xmlPathInOrder.push_back(
-            "/instrumentation/slip-skid-ball/indicated-slip-skid");
-    xmlPathInOrder.push_back(
-            "/instrumentation/turn-indicator/indicated-turn-rate");
-    xmlPathInOrder.push_back(
-            "/instrumentation/vertical-speed-indicator/indicated-speed-fpm");
-    xmlPathInOrder.push_back("/controls/flight/aileron");
-    xmlPathInOrder.push_back("/controls/flight/elevator");
-    xmlPathInOrder.push_back("/controls/flight/rudder");
-    xmlPathInOrder.push_back("/controls/flight/flaps");
-//    xmlPathInOrder.push_back("/controls/engines/engine/throttle");
-xmlPathInOrder.push_back("/controls/engines/current-engine/throttle");
-    xmlPathInOrder.push_back("/engines/engine/rpm");
-    return xmlPathInOrder;
-}
-
-void CreateServer::setXmlPathMap(string key, double value) {
-    cout << "----------------------------checking the xmp ptha map updating"
-         << endl;
-    //pthread_mutex_t *mutex = MutexClass::getInstance()->getMutex();
-    //pthread_mutex_lock(mutex);
-
-    cout << "the mutex is on ! " << endl;
-    cout << "the key : " + key << endl;
-    cout <<"does the key exsist in the bind table : " +to_string
-            (BindValueTable::instance()->getBIndTable().count(key) )<<endl;
-    if (BindValueTable::instance()->getBIndTable().count(key) == 1) {
-        BindValueTable::instance()->setValue(key, value);
-        cout << "done setting" << to_string(BindValueTable::instance()->getValue
-                (key))
-             << endl;
-    }
-    cout<<"done seeting the xml path map" << endl;
-    //pthread_mutex_unlock(mutex);
 }

@@ -28,6 +28,7 @@ void Parser::run(list<string> laxerCommands) {
             if(command != nullptr){
                 CommandExpression* commandExpression = new CommandExpression(command,&it);
                 commandExpression->calculate();
+
                 //command->execute(it);
             }
         }

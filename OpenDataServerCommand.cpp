@@ -31,8 +31,6 @@ void OpenDataServerCommand::execute(list<string>::iterator &it) {
     Expression *e2 = factory.create(waitTimeExpression);
     int waitTime = (int) e2->calculate();
 
-//    cout << "the waiting time is : "+ to_string(waitTime)<<endl;
-
     struct ServerArguments *serverParam = new ServerArguments();
     serverParam->portNum = portNum;
     serverParam->waitTime = waitTime;

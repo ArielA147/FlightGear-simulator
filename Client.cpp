@@ -43,8 +43,8 @@
 void Client::sentMsg(string msg) {
 //    mutex mtx;
 //    mtx.lock();
-
     char buffer[1000];
+    cout << "we are in the sentMsg of the client" << endl;
     bzero(buffer, 1000);
     strcpy(buffer, msg.c_str());
 
@@ -55,13 +55,17 @@ void Client::sentMsg(string msg) {
 
     ssize_t n = write(Client::sockfd, buffer, strlen(buffer));
 //    mtx.unlock();
+    cout << "done writing " << endl;
 
     if (n < 0) {
         throw CLINET_ERROR;
         exit(1);
     }
+    cout << "done with the function of the clinet - go next" << endl;
 }
 
 void Client::setSoketfd(int sock) {
+    cout << "do the set sockfd " << endl;
     this->sockfd = sock;
+    cout << "ended to do the set sockfd " << endl;
 }

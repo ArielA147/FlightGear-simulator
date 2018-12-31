@@ -26,8 +26,6 @@ public:
     Initializer();
     void start(string Path, char seperator);
     void initializeMap();
-    void buildXmlMap();
-    ~Initializer();
 };
 
 

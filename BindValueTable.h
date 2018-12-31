@@ -8,8 +8,6 @@
 #include <string>
 #include <map>
 #include <mutex>
-#include <iostream>
-#include "MutexClass.h"
 
 using namespace std;
 
@@ -28,32 +26,17 @@ public:
         return this->bindValueTable;
     }
     inline void setValue(string key, double value){
-        //pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
-        //pthread_mutex_lock(mutex);
-        cout << "the value of the bind value db before updateing " +
-                to_string(this->bindValueTable[key]) << endl;
+        mutex mtx;
+        mtx.lock();
         this->bindValueTable[key] = value;
-        cout << "the value of the bind value db after updateing " +
-                to_string(this->bindValueTable[key]) << endl;
-        //pthread_mutex_unlock(mutex);
+    mtx.unlock();
     }
     inline double getValue(const string &key){
-        //pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
-        //pthread_mutex_lock(mutex);
-        if(this->bindValueTable.count(key) ==  1){
-            double res = this->bindValueTable[key];
-       //     pthread_mutex_unlock(mutex);
-            return res;
-        }
-        else{
-         //   pthread_mutex_unlock(mutex);
+        if(this->bindValueTable.count(key) ==  1)
+            return this->bindValueTable[key];
+        else
             throw runtime_error("var: " + key + "not exists");
-        }
 
-    }
-
-    ~BindValueTable(){
-        delete  map_instance;
     }
 
 

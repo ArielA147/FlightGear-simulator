@@ -6,12 +6,11 @@
 #include "AppendCommand.h"
 #include "BindValueTable.h"
 #include "Client.h"
-#include "MutexClass.h"
 #include <mutex>
 
 #define DEFAULT_VALUE 0
 
-AppendCommand::AppendCommand(Client *client) {
+AppendCommand::AppendCommand(Client* client) {
     //this->dataBase = dataBase;
     this->client = client;
     this->expreFactory = new ExpressionFactory();
@@ -21,63 +20,56 @@ void AppendCommand::execute(list<string>::iterator &it) {
     // update variable value.
     string varName = *it;
     it++;
-    if (*it != "=")
+    if(*it != "=")
         throw runtime_error("syntax error");
     it++;
-    if (*it == "bind") {
+    if(*it == "bind") {
         it++;
         if (SymbolTable::instance()->getVarTable().count(*it) == 1) {
             string path = BindTable::instance()->getValue(*it);
             BindTable::instance()->setValue(varName, path);
-            //SymbolTable::instance()->setValue(varName, SymbolTable::instance
-            //()->getValue(*it));
             it++;
         } else {
-            string path = it.operator*().substr(1, it.operator*().length() - 2);
-            BindTable::instance()->setValue(varName, path);
-            SymbolTable::instance()->setValue(varName, DEFAULT_VALUE);
+            string path = it.operator*().substr(1, it.operator*().length() -2);
+            BindTable::instance()->setValue(varName,path);
+            SymbolTable::instance()->setValue(varName,DEFAULT_VALUE);
             it++;
         }
-    } else {
-
+    }
+    else{
         ExpressionReader er = ExpressionReader();
         // get variable value.
         list<string> expressionStr = er.getExpression(it);
         // variables names with their values.
         //ExpressionFactory exprFactory = ExpressionFactory(this->dataBase);
-        Expression *e = this->expreFactory->create(expressionStr);
-
-
-        pthread_mutex_t *mutex = MutexClass::getInstance()->getMutex();
-        pthread_mutex_lock(mutex);
-        cout << "append lock" << endl;
+        Expression* e =  this->expreFactory->create(expressionStr);
         double value = e->calculate();
-        delete e;
-        if (varName == "rudder") {
-            cout << "rudder value  after calculate" + to_string(value) << endl;
-        }
 
         //delete alloc
         // ate memory.
         //delete e;
-        SymbolTable::instance()->setValue(varName, value);
-        if (BindTable::instance()->getBIndTable().count(varName) == 1) {
+
+//        mutex mtx;
+//        mtx.lock();
+        SymbolTable::instance()->setValue(varName,value);
+
+        cout<< "i finished to update the symbol table" << endl;
+        cout << "now the value in the symbole table after updating is  : " +
+        to_string(SymbolTable::instance()->getValue(varName))<< endl;
+
+
+        if(BindTable::instance()->getBIndTable().count(varName) == 1){
             string path = BindTable::instance()->getValue(varName);
-            if (path != "") {
+            if(path != ""){
                 string message = "set " + path + " " + to_string(value) +
-                                 "\r\n";
+                        "\r\n";
+                //Client::sentMsg(message);
                 this->client->sentMsg(message);
-                cout << "out of the sentMsg" << endl;
+                cout << "this " + varName + " with path " + path + " "
+                +to_string(value)<<endl;
             }
         }
-        pthread_mutex_unlock(mutex);
-        cout << "append ulock" << endl;
-
-        if (varName == "rudder") {
-            cout << "rudder symbol after append: " + to_string
-                    (SymbolTable::instance()->getValue("rudder")) <<
-                 endl;
-        }
+//        mtx.unlock();
 
     }
 

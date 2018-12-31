@@ -9,7 +9,7 @@
 #include <string>
 #include <map>
 #include <mutex>
-#include "MutexClass.h"
+
 using namespace std;
 
 
@@ -27,28 +27,19 @@ public:
         return this->pathTable;
     }
     inline void setValue(string key, string value){
-       // pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
-       // pthread_mutex_lock(mutex);
+        mutex mtx;
+        mtx.lock();
         this->pathTable[key] = value;
-       // pthread_mutex_unlock(mutex);
+        mtx.unlock();
     }
     inline string getValue(const string &key){
-        //pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
-        //pthread_mutex_lock(mutex);
-        if(this->pathTable.count(key) ==  1){
-            string s = this->pathTable[key];
-          //  pthread_mutex_unlock(mutex);
-            return s;
-        }
-        else{
-//            pthread_mutex_unlock(mutex);
+        if(this->pathTable.count(key) ==  1)
+            return this->pathTable[key];
+        else
             return "";
-        }
+
     }
 
-    ~BindTable(){
-        delete  map_instance;
-    }
 
 };
 
