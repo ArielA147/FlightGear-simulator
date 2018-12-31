@@ -19,7 +19,6 @@ void PrintCommand::execute(list<string>::iterator &it) {
         Expression* exp = factory.create(expressionStr);
         cout<<"print command print without \\ :" ;
         cout << exp->calculate() << endl;
-        delete exp;
 
     }
 

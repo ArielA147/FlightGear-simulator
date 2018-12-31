@@ -24,7 +24,7 @@ public:
     AppendCommand(Client* client);
     // update variable into relevant map.
     void execute(list<string>::iterator &it);
-    ~AppendCommand();
+
 
 };
 

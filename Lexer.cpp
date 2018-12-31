@@ -4,8 +4,6 @@
 
 #include "Lexer.h"
 #include <sstream>
-#include <algorithm>
-
 
 
 string Lexer::replaceSubString(string subject, const string &search,
@@ -26,8 +24,8 @@ void Lexer::addSpaces(string &s) {
     }
 }
 
-list<string> Lexer::lexer(string &s, char delimiter) {
-    list<string> tokens;
+list <string> Lexer::lexer(string &s, char delimiter) {
+    list <string> tokens;
     string token;
     addSpaces(s);
     istringstream tokenStream(s);
@@ -59,10 +57,12 @@ list<string> Lexer::lexer(string &s, char delimiter) {
     }
 
     bool found = false;
-    list<string> final_tokens;
+    list <string> final_tokens;
 
-// appending the "" tothe string back
-    for (list<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {
+
+    for (list<string>::iterator it = tokens.begin();
+    it != tokens.end();
+    ++it){
         string s = *it;
         if (s == "\"") {
             if (found) {
@@ -77,51 +77,7 @@ list<string> Lexer::lexer(string &s, char delimiter) {
         }
     }
 
-    final_tokens =  appendSpecialSings(final_tokens);
 
-    return final_tokens;
-}
 
-list<string> Lexer::appendSpecialSings(list<string> tokens) {
-
-    list<string> final_tokens;
-
-    string real_sign;
-    vector<string> tmp{"=", "!", "<", ">"};
-
-    for (list<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {
-
-        string cur_sign = *it;
-        if (++it != tokens.end()) {
-            string next_sign = *(it);
-
-            // checking if the sign is one of those : == != <= >=. if yes will combine the two
-
-            if (next_sign == "=") {
-                if (count(tmp.begin(), tmp.end(), (cur_sign)) == 1) {
-                    real_sign = cur_sign + next_sign;
-                    final_tokens.push_back(real_sign);
-                }else{
-                    final_tokens.push_back(cur_sign);
-                    final_tokens.push_back(next_sign);
-                }
-            } else {
-                --it;
-                bool found = false;
-                for (auto iter = tmp.begin(); iter != tmp.end(); ++iter) {
-                    if (*iter == cur_sign) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (found == false) {
-                    final_tokens.push_back(cur_sign);
-                }
-            }
-        } else {
-            final_tokens.push_back(cur_sign);
-            break;
-        }
-    }
     return final_tokens;
 }

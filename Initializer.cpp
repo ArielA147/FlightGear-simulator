@@ -61,6 +61,7 @@ void Initializer::start(string file_Path, char seperator) {
     }
 
     this->parser->run(tokens);
+
 }
 
 void Initializer::buildXmlMap() {
@@ -106,16 +107,14 @@ void Initializer::buildXmlMap() {
     bindValueTable->setValue("/engines/engine/rpm", 0);
 }
 
+
 Initializer::~Initializer() {
-    CommandDataBase *db = this->commandDataBase;
-    for (auto it = db->getCommandTable().begin();
-         it != db->getCommandTable().end(); it++) {
-        if (it->second != nullptr)
+    CommandDataBase* db = this->commandDataBase;
+    for(auto it = db->getCommandTable().begin(); it !=db->getCommandTable().end(); it++){
+        if(it->second != nullptr)
             delete it->second;
     }
-    delete this->commandDataBase;
-    if (this->parser != nullptr)
+    if(this->parser != nullptr)
         delete this->parser;
-    delete this->client;
 }
 

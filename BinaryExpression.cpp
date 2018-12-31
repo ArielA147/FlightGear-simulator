@@ -23,6 +23,6 @@ void BinaryExpression::setRightValue(Expression *rightValue) {
 }
 
 BinaryExpression::~BinaryExpression() {
-    delete  leftValue;
+    delete leftValue;
     delete rightValue;
 }

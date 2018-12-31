@@ -14,7 +14,6 @@ public:
     BoolExpression(Expression *leftValue,string condition_op ,Expression *rightValue);
 
     double calculate();
-
 };
 
 

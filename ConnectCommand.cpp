@@ -24,6 +24,7 @@ void ConnectCommand::execute(list<string>::iterator &it) {
 
     int port = (int) e->calculate();
     delete e;
+
     // checking if there is a connection to the server / if there is not -
     // not to conintue in the code and wait till we connected to the server
 

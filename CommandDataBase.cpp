@@ -93,7 +93,7 @@ vector<string> CommandDataBase::getXmlPathKeyByXmlOrder() {
     xmlPathInOrder.push_back(
             "/instrumentation/heading-indicator/indicated-heading-deg");
     xmlPathInOrder.push_back(
-            "/instrumentation/magnetic-compass/indicated-heading-deg");
+            "/instrumentation/heading-indicator/offset-deg");
     xmlPathInOrder.push_back(
             "/instrumentation/slip-skid-ball/indicated-slip-skid");
     xmlPathInOrder.push_back(

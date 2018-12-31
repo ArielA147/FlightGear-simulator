@@ -21,6 +21,8 @@ double ConditionParser::checkBoolExpression(list<string> leftExpression, string 
     Expression *rightExpr = factory.create(rightExpression);
     Expression *boolExpression = new BoolExpression(leftExpr, boolOperator, rightExpr);
     double result = boolExpression->calculate();
+    delete leftExpr;
+    delete rightExpr;
     delete boolExpression;
     return result;
 

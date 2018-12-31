@@ -51,7 +51,7 @@ public:
      */
     void addSpaces(string &s);
 
-    list <string> appendSpecialSings(list<string>tokens);
+
 
     vector<string> baseSplit(string &s, char delimiter) {
         vector<string> tokens;

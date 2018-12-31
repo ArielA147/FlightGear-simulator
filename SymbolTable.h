@@ -56,6 +56,7 @@ public:
     ~SymbolTable(){
         delete  map_instance;
     }
+
 };
 
 

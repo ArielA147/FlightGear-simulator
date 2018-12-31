@@ -50,6 +50,7 @@ void AppendCommand::execute(list<string>::iterator &it) {
 
         pthread_mutex_t *mutex = MutexClass::getInstance()->getMutex();
         pthread_mutex_lock(mutex);
+        cout << "append lock" << endl;
         double value = e->calculate();
         delete e;
         if (varName == "rudder") {
@@ -66,13 +67,18 @@ void AppendCommand::execute(list<string>::iterator &it) {
                 string message = "set " + path + " " + to_string(value) +
                                  "\r\n";
                 this->client->sentMsg(message);
+                cout << "out of the sentMsg" << endl;
             }
         }
         pthread_mutex_unlock(mutex);
+        cout << "append ulock" << endl;
+
+        if (varName == "rudder") {
+            cout << "rudder symbol after append: " + to_string
+                    (SymbolTable::instance()->getValue("rudder")) <<
+                 endl;
+        }
+
     }
 
-}
-
-AppendCommand::~AppendCommand() {
-    delete this->expreFactory;
 }
