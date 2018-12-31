@@ -8,6 +8,8 @@
 #include <string>
 #include <map>
 #include <mutex>
+#include <iostream>
+#include "MutexClass.h"
 
 using namespace std;
 
@@ -25,20 +27,24 @@ public:
         return this->symbolTable;
     }
     inline void setValue(string key, double value){
-        mutex mtx;
-        mtx.lock();
         this->symbolTable[key] = value;
-    mtx.unlock();
     }
     inline double getValue(const string &key){
-        if(this->symbolTable.count(key) ==  1)
-            return this->symbolTable[key];
-        else
+        double temp;
+        if(this->symbolTable.count(key) ==  1){
+            temp = this->symbolTable[key];
+            return temp;
+        }
+
+        else{
             throw runtime_error("var: " + key + "not exists");
+        }
 
     }
 
-
+    ~SymbolTable(){
+        delete  map_instance;
+    }
 };
 
 

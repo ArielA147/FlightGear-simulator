@@ -16,10 +16,12 @@
 using namespace std;
 
 class ExpressionFactory {
-    //CommandDataBase db;
 public:
-    //ExpressionFactory(CommandDataBase &db);
-
+/**
+ * creating an expression
+ * @param tokens list of tokes
+ * @return expression
+ */
     Expression *create(list<string> tokens);
 
 };

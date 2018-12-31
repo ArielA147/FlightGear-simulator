@@ -13,6 +13,7 @@ using namespace std;
 class ExpressionReader {
 
 public:
+    // returning liss of the expressions
     list<string> getExpression(list<string>::iterator &it);
 };
 

@@ -13,6 +13,11 @@ class CommandExpression : public Expression {
     Command *command;
     list<string>::iterator *it;
 public:
+    /**
+     *
+     * @param command
+     * @param it
+     */
     CommandExpression(Command *command,list<string>::iterator *it);
     double calculate();
 };

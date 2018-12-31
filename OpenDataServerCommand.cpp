@@ -31,14 +31,15 @@ void OpenDataServerCommand::execute(list<string>::iterator &it) {
     Expression *e2 = factory.create(waitTimeExpression);
     int waitTime = (int) e2->calculate();
 
+    delete  e1;
+    delete  e2;
+
     struct ServerArguments *serverParam = new ServerArguments();
     serverParam->portNum = portNum;
     serverParam->waitTime = waitTime;
 
     pthread_t  trid;
     pthread_create(&trid, nullptr, thread_func,serverParam);
-//    pthread_join(trid, nullptr); // too : to delete this - cause we work in
-// the main thread and not needed to join in here
 
     return ;
 }

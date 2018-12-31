@@ -29,9 +29,6 @@ double BoolExpression::calculate() {
     else if (this->condition_op == ">=")
         return leftValue->calculate() >= rightValue->calculate();
 
-
-
-
     else
 
         throw runtime_error("invalid operator: " + this->condition_op);

@@ -16,6 +16,10 @@ list<string> laxerCommands;
 
 public:
     Parser(CommandDataBase *db);
+    /**
+     * running and executing the commands of the lexer commands
+     * @param laxerCommands list of commands
+     */
     void run(list<string> laxerCommands);
 };
 

@@ -8,6 +8,10 @@
 class Div : public BinaryExpression {
 public:
     Div(Expression* leftValue, Expression* rightValue);
+/**
+ *
+ * @return result of the div claculation
+ */
     double calculate();
 };
 

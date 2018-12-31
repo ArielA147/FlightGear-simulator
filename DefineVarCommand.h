@@ -13,6 +13,10 @@ class DefineVarCommand : public Command {
 
 public:
     DefineVarCommand(Command* appendCommand);
+    /**
+     *
+     * @param it
+     */
     void execute(list<string>::iterator &it);
 
 };

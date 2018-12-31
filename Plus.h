@@ -15,7 +15,10 @@ class Plus : public BinaryExpression {
 public:
 
     Plus(Expression *leftValue, Expression *rightValue);
-
+/**
+ * calculating the pluse expression
+ * @return result of the calculation
+ */
     double calculate();
 };
 #endif //PROJECT_PLUS_H

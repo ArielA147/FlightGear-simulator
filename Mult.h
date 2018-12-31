@@ -11,7 +11,10 @@
 class Mult : public BinaryExpression {
 public:
     Mult(Expression *leftValue, Expression *rightValue);
-
+/**
+ * calculating the multiple expression
+ * @return result of the calculation
+ */
     double calculate();
 };
 

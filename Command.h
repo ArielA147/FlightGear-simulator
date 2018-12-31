@@ -13,7 +13,10 @@ using namespace std;
 // Command interface
 class Command {
 public:
-    // execute the command.
+    /**
+     * the function execute the command.
+     * @param it
+     */
     virtual  void execute(list<string>::iterator &it) = 0;
     virtual ~Command(){}
 };

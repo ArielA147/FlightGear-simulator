@@ -12,7 +12,7 @@
 #include "IfCommand.h"
 #include "LoopCommand.h"
 #include "DefineVarCommand.h"
-#include "ReadFromFIle.h"
+#include "ReadFromFile.h"
 #include "Lexer.h"
 #include "Client.h"
 #include "SleepCommand.h"
@@ -26,6 +26,8 @@ public:
     Initializer();
     void start(string Path, char seperator);
     void initializeMap();
+    void buildXmlMap();
+    ~Initializer();
 };
 
 

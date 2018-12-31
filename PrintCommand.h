@@ -14,6 +14,10 @@
 class PrintCommand : public Command {
 
 public:
+    /**
+     * exectuting the printing command
+     * @param it
+     */
     void execute(list<string>::iterator &it);
 
 };

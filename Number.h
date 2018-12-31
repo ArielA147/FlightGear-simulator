@@ -12,7 +12,10 @@ class Number : public Expression{
     double num;
 public:
     Number(string num);
-
+/**
+ * calculating the number
+ * @return double number
+ */
     double calculate();
 
 };

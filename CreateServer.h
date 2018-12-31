@@ -23,17 +23,21 @@ using namespace std;
 
 class CreateServer {
 private:
-//    string _ip;
     int _port;
     int _waitTime;
 public:
-//    CreateServer(const string &_ip, int _port, int _waitTime);
 
     CreateServer(int _port, int _waitTime);
 
     void execute();
 
-    void settingPathMapWithBuffer(const char *buffer) const;
+    void settingPathMapWithBuffer(const char *buffer);
+
+    void updateDataBase();
+
+    vector<string> getXmlPathKeyByXmlOrder();
+
+    void setXmlPathMap(string key, double value);
 };
 
 

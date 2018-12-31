@@ -13,8 +13,11 @@
 class SleepCommand : public Command{
 
 public:
+    /**
+     * executing the sleeping command
+     * @param it
+     */
     void execute(list<string>::iterator &it);
-
 };
 
 

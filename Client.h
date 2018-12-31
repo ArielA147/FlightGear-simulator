@@ -22,8 +22,15 @@ class Client {
     int sockfd = 0;
 
 public:
+    /**
+     * setting the client socket by sockt number
+     * @param sock socket number
+     */
     void setSoketfd(int sock);
-
+/**
+ * senting msg to the server and update the simulator
+ * @param msg the msg we want to update the simulator with
+ */
     void sentMsg(string msg);
 };
 

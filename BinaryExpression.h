@@ -13,17 +13,36 @@ protected:
     Expression *leftValue;
     Expression *rightValue;
 public:
+    /**
+     * constractor
+     * @param leftValue the left side of the expression
+     * @param rightValue the right left side of the expression
+     */
     BinaryExpression(Expression *leftValue, Expression *rightValue);
 
-    //return the left Expression object.
+    /**
+     *
+     * @return the left Expression object.
+     */
     Expression *getLeftArgument();
 
-    //return the right Expression object.
+/**
+ *
+ * @return    the right Expression object.
+ */
     Expression *getRightArgument();
-
+/**
+ * sets the left side of the expression
+ * @param leftValue expression
+ */
     void setLeftValue(Expression *leftValue);
-
+/**
+ * sets the right side of the expression
+ * @param rightValue expression
+ */
     void setRightValue(Expression *rightValue);
+
+    ~BinaryExpression();
 };
 
 

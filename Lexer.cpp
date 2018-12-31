@@ -4,6 +4,8 @@
 
 #include "Lexer.h"
 #include <sstream>
+#include <algorithm>
+
 
 
 string Lexer::replaceSubString(string subject, const string &search,
@@ -60,24 +62,40 @@ list <string> Lexer::lexer(string &s, char delimiter) {
     list <string> final_tokens;
 
 
-    for (list<string>::iterator it = tokens.begin();
-    it != tokens.end();
-    ++it){
-        string s = *it;
-        if (s == "\"") {
-            if (found) {
-                final_tokens.push_back(str);
+    string real_sign;
+    vector<string> tmp{"=", "!", "<", ">"};
+
+    for (list<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {
+        string cur_sign = *it;
+        if (++it != tokens.end()) {
+            string next_sign = *(it);
+
+            // checking if the sign is one of those : == != <= >=. if yes will combine the two
+
+            if (next_sign == "=" && count(tmp.begin(), tmp.end(), (cur_sign)) == 1) {
+                real_sign = cur_sign + next_sign;
+                final_tokens.push_back(real_sign);
             } else {
-                found = true;
+                --it;
+                if (cur_sign == "\"") {
+                    if (found) {
+                        final_tokens.push_back(str);
+                    } else {
+                        found = true;
+                        final_tokens.push_back(str);
+                    }
+                } else {
+                    if (!found) {
+                        final_tokens.push_back(cur_sign);
+                    }
+                }
             }
-        } else {
-            if (!found) {
-                final_tokens.push_back(s);
+        }else{
+            if(!found){
+                final_tokens.push_back(cur_sign);
             }
+            break;
         }
     }
-
-
-
     return final_tokens;
 }

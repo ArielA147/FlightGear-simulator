@@ -9,58 +9,6 @@ SymbolTable *SymbolTable::map_instance = NULL;
 BindTable *BindTable::map_instance = NULL;
 BindValueTable *BindValueTable::map_instance = NULL;
 
-
-//void dvir_test() {
-//    CommandDataBase* db = new CommandDataBase();
-//    SymbolTable::instance()->setValue("x",5);
-//    list<string> g;
-//
-//    g.push_back("while");
-//    g.push_back("x");
-//    g.push_back("<");
-//    g.push_back("40");
-//    g.push_back("{");
-//    g.push_back("while");
-//    g.push_back("x");
-//    g.push_back("<");
-//    g.push_back("40");
-//    g.push_back("{");
-//    g.push_back("x");
-//    g.push_back("=");
-//    g.push_back("x");
-//    g.push_back("+");
-//    g.push_back("1");
-//    g.push_back("}");
-//    g.push_back("x");
-//    g.push_back("=");
-//    g.push_back("x");
-//    g.push_back("+");
-//    g.push_back("1");
-//    g.push_back("}");
-//    g.push_back("done");
-
-
-//    list<string>::iterator it = g.begin();
-//ExpressionFactory exprFactory = ExpressionFactory(*db);
-//Expression* e = exprFactory.create(g);
-//Expression* e = exprFactory.create(g);
-//double a = e->calculate();
-//Expression* e2 = exprFactory.create(g);
-//double aa = e2->calculate();
-//int i = 20;
-
-//list<string>::iterator it = g.begin();
-
-//    Command* appendCommand = new AppendCommand(*db);
-//   db->addCommand("updateVar",appendCommand);
-//  Command* loopCommand = new LoopCommand(db);
-// LoopCommand->execute(it);
-// double xx = SymbolTable::instance()->getValue("x");
-// int x = 50;
-
-//};
-
-
 void check_connection() {
 //     this is test to heck if the connetcion withas client is good
     Client *client = new Client();
@@ -74,12 +22,19 @@ void check_connection() {
 }
 
 
-int main() {
-//dvir_test();
+int main(int argc, char* argv[]) {
 
-    Initializer init;
-    init.start("/home/ariel/CLionProjects/c_plus_plus/project/config.txt", ' ');
+    if(argc == 1){
+        throw "no file provided";
+    }
+    else if(argc == 2){
+        Initializer init;
+        init.start(argv[1], ' ');
 
-
+    }
+    else {
+        throw "to many arguments";
+    }
     return 0;
+
 }

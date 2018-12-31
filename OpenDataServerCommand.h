@@ -23,6 +23,10 @@ struct ServerArguments{
 class OpenDataServerCommand : public Command {
 
 public:
+    /**
+     * creating a server command
+     * @param it
+     */
     void execute(list<string>::iterator &it);
 
 };

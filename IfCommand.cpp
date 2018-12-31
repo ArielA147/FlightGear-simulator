@@ -20,7 +20,7 @@ void IfCommand::execute(list<string>::iterator &it) {
     it++;
     list<string> rightExpression = er.getExpression(it);
     if (*it != "{")
-        throw runtime_error("invalid Syntax");
+        throw runtime_error("invalid Syntax in if command");
     // skip "{" token.
     it++;
     list<string> commandsList;

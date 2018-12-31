@@ -12,7 +12,7 @@ int my_main() {
 /////////////////////////////////////////////////////////////////////////////////
 
     string s3 = "var breaks=bind \"/controls/flight/speedbrake\"";
-    string s4 = "var throttle = bind \"/controls/engines/engine/throttle\"";
+    string s4 = "var throttle = bind \"/controls/engines/current-engine/throttle\"";
     string s5 = "var heading = bind \"/instrumentation/heading-indicator/offset-deg\"";
     string s6 ="var airspeed = bind \"/instrumentation/airspeed-indicator/indicated-speed-kt\"";
     string s7= "var roll = bind\"/instrumentation/attitude-indicator/indicated-roll-deg\"";

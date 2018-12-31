@@ -5,7 +5,7 @@
 #include "Initializer.h"
 
 Initializer::Initializer() {
-
+    buildXmlMap();
     this->commandDataBase = new CommandDataBase();
     this->parser = new Parser(this->commandDataBase);
     this->client = new Client();
@@ -61,5 +61,60 @@ void Initializer::start(string file_Path, char seperator) {
     }
 
     this->parser->run(tokens);
-
 }
+
+void Initializer::buildXmlMap() {
+    BindValueTable *bindValueTable = BindValueTable::instance();
+    bindValueTable->setValue(
+            "/instrumentation/airspeed-indicator/indicated-speed-kt", 0);
+    bindValueTable->setValue("/instrumentation/altimeter/indicated-altitude-ft",
+                             0);
+    bindValueTable->setValue("/instrumentation/altimeter/pressure-alt-ft", 0);
+    bindValueTable->setValue(
+            "/instrumentation/attitude-indicator/indicated-pitch-deg", 0);
+    bindValueTable->setValue(
+            "/instrumentation/attitude-indicator/indicated-roll-deg", 0);
+    bindValueTable->setValue(
+            "/instrumentation/attitude-indicator/internal-pitch-deg", 0);
+    bindValueTable->setValue(
+            "/instrumentation/attitude-indicator/internal-roll-deg", 0);
+    bindValueTable->setValue("/instrumentation/encoder/indicated-altitude-ft",
+                             0);
+    bindValueTable->setValue("/instrumentation/encoder/pressure-alt-ft", 0);
+    bindValueTable->setValue("/instrumentation/gps/indicated-altitude-ft", 0);
+    bindValueTable->setValue("/instrumentation/gps/indicated-ground-speed-kt",
+                             0);
+    bindValueTable->setValue("/instrumentation/gps/indicated-vertical-speed",
+                             0);
+    bindValueTable->setValue(
+            "/instrumentation/heading-indicator/indicated-heading-deg", 0);
+    bindValueTable->setValue(
+            "/instrumentation/magnetic-compass/indicated-heading-deg", 0);
+    bindValueTable->setValue(
+            "/instrumentation/slip-skid-ball/indicated-slip-skid", 0);
+    bindValueTable->setValue(
+            "/instrumentation/turn-indicator/indicated-turn-rate", 0);
+    bindValueTable->setValue(
+            "/instrumentation/vertical-speed-indicator/indicated-speed-fpm", 0);
+    bindValueTable->setValue("/controls/flight/aileron", 0);
+    bindValueTable->setValue("/controls/flight/elevator", 0);
+    bindValueTable->setValue("/controls/flight/rudder", 0);
+    bindValueTable->setValue("/controls/flight/flaps", 0);
+    bindValueTable->setValue("/controls/engines/current-engine/throttle",0);
+//    bindValueTable->setValue("/controls/engines/engine/throttle", 0);
+    bindValueTable->setValue("/engines/engine/rpm", 0);
+}
+
+Initializer::~Initializer() {
+    CommandDataBase *db = this->commandDataBase;
+    for (auto it = db->getCommandTable().begin();
+         it != db->getCommandTable().end(); it++) {
+        if (it->second != nullptr)
+            delete it->second;
+    }
+    delete this->commandDataBase;
+    if (this->parser != nullptr)
+        delete this->parser;
+    delete this->client;
+}
+

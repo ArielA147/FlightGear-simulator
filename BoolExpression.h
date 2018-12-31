@@ -12,8 +12,12 @@ class BoolExpression : public BinaryExpression {
     string condition_op;
 public:
     BoolExpression(Expression *leftValue,string condition_op ,Expression *rightValue);
-
+/**
+ * calculating the value of the expression
+ * @return
+ */
     double calculate();
+
 };
 
 

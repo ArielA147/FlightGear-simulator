@@ -3,6 +3,7 @@
 //
 
 #include <unistd.h>
+#include <thread>
 #include "SleepCommand.h"
 
 
@@ -14,5 +15,6 @@ void SleepCommand::execute(list<string>::iterator &it) {
     list<string> sleepTimeStr = er.getExpression(it);
     Expression *e1 = factory.create(sleepTimeStr);
     double sleepTime =  e1->calculate();
-    usleep(sleepTime);
+    this_thread::sleep_for(std::chrono::microseconds((int) (sleepTime)));
+    delete e1;
 }

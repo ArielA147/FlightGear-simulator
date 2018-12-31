@@ -14,17 +14,20 @@
 #include "Client.h"
 
 class AppendCommand : public Command{
-    // command data base.
-    //CommandDataBase dataBase;
     ExpressionFactory* expreFactory;
     Client* client;
 
 public:
     // constructor
     AppendCommand(Client* client);
-    // update variable into relevant map.
+
+    /**
+     * update variable into relevant map.
+     * @param it
+     */
     void execute(list<string>::iterator &it);
 
+    ~AppendCommand();
 
 };
 

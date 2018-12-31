@@ -13,11 +13,6 @@ enum priority {
     SPACIAL,SECOND, FIRST
 };
 
-/*
-ExpressionFactory::ExpressionFactory(CommandDataBase &db) {
-    this->db = db;
-}*/
-
 bool isNum(string &token) {
     bool checkNegative = 0;
     bool showDot = 0;
