@@ -15,6 +15,8 @@
 #include "ReadFromFIle.h"
 #include "Lexer.h"
 #include "Client.h"
+#include "SleepCommand.h"
+#include "PrintCommand.h"
 
 class Initializer {
     Parser* parser;
@@ -24,6 +26,8 @@ public:
     Initializer();
     void start(string Path, char seperator);
     void initializeMap();
+    void buildXmlMap();
+    ~Initializer();
 };
 
 

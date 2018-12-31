@@ -5,6 +5,7 @@
 #include <netinet/in.h>
 #include <netdb.h>
 #include <iostream>
+#include <mutex>
 #include "Client.h"
 //Client::Client(string ip, int port) {
 ////    int n;
@@ -40,35 +41,26 @@
 
 
 void Client::sentMsg(string msg) {
+//    mutex mtx;
+//    mtx.lock();
+
     char buffer[1000];
-    cout << "writing" << endl;
-    printf(ENTER_MSG);
     bzero(buffer, 1000);
     strcpy(buffer, msg.c_str());
 
-//
-//        BindValueTable *bindValueTable = BindValueTable::instance();
-//        for (auto it = bindValueTable->getBIndTable().begin(); it !=
-//        bindValueTable->getBIndTable().end(); it++) {
-//            string path = it->first;
-//            double value = it->second;
-//            string tmp = "set" + path +" " + to_string(value);
-//            strcpy(buffer, tmp);
-//
-//            BindTable* bindTable = BindTable::instance();
-//            std::find_if
+    cout << "now will do the wrintng" << endl;
+    cout << "the msg is =====> " + msg<<endl;
 
     /* send message to the server */
+
     ssize_t n = write(Client::sockfd, buffer, strlen(buffer));
+//    mtx.unlock();
 
     if (n < 0) {
         throw CLINET_ERROR;
         exit(1);
     }
-
 }
-
-//Client::Client(int sockfd) : sockfd(sockfd) {}
 
 void Client::setSoketfd(int sock) {
     this->sockfd = sock;

@@ -35,7 +35,7 @@ public:
     /**
      * the function build in hard coded way the xml path of the simulator
      */
-    void buildXmlMap();
+   // void buildXmlMap();
 
     // get varTable.
     const map<string, double> &getVarTable() const;
@@ -52,7 +52,7 @@ public:
     void addCommand(string varName, Command* command);
     Command* getCommand(const string &CommandName);
     vector<string> getXmlPathKeyByXmlOrder();
-    void setXmlPathMap(string key , double value);
+    //void setXmlPathMap(string key , double value);
 };
 
 #endif //PROJECT_COMMANDDATABASE_H

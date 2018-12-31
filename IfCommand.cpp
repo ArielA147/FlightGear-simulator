@@ -4,6 +4,7 @@
 
 #include "IfCommand.h"
 
+#define END_OF_FILE "\\n"
 
 IfCommand::IfCommand(Parser* parser) {
     this->parser = parser;
@@ -14,20 +15,31 @@ void IfCommand::execute(list<string>::iterator &it) {
     // skip "while" token.
     it++;
     ExpressionReader er = ExpressionReader();
-    this->leftExpression = er.getExpression(it);
-    this->boolOperator = *it;
+    list<string> leftExpression = er.getExpression(it);
+    string boolOperator = *it;
     it++;
-    this->rightExpression = er.getExpression(it);
+    list<string> rightExpression = er.getExpression(it);
     if (*it != "{")
-        throw runtime_error("invalid Syntax");
+        throw runtime_error("invalid Syntax in if command");
     // skip "{" token.
     it++;
     list<string> commandsList;
-    while (*it != "}") {
+    int brakes = 0;
+    while(!(*it == "}" && brakes == 0)){
+        if (*it == "{")
+            brakes++;
+        if (*it == "}")
+            brakes--;
         commandsList.push_back(*it);
-        it++;
+        if(*it != END_OF_FILE)
+            it++;
     }
-    if (IfCommand::checkBoolExpression() == 1) {
+    commandsList.push_back(END_OF_FILE);
+
+    if (IfCommand::checkBoolExpression(leftExpression,boolOperator,rightExpression) == 1) {
         this->parser->run(commandsList);
     }
+
+    if(*it != END_OF_FILE)
+        it++;
 }

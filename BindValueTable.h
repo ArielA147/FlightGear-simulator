@@ -5,10 +5,11 @@
 #ifndef PROJECT_BINDVALUETABLE_H
 #define PROJECT_BINDVALUETABLE_H
 
-
-
 #include <string>
 #include <map>
+#include <mutex>
+#include <iostream>
+#include "MutexClass.h"
 
 using namespace std;
 
@@ -30,13 +31,17 @@ public:
         this->bindValueTable[key] = value;
     }
     inline double getValue(const string &key){
-        if(this->bindValueTable.count(key) ==  1)
-            return this->bindValueTable[key];
-        else
+        if(this->bindValueTable.count(key) ==  1){
+            double res = this->bindValueTable[key];
+            return res;
+        }
+        else{
             throw runtime_error("var: " + key + "not exists");
-
+        }
     }
 
-
+    ~BindValueTable(){
+        delete  map_instance;
+    }
 };
 #endif //PROJECT_BINDVALUETABLE_H

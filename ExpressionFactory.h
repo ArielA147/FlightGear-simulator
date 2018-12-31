@@ -13,13 +13,12 @@
 #include <vector>
 #include <stack>
 
-
 using namespace std;
 
 class ExpressionFactory {
-    list<string> tokens;
+    //CommandDataBase db;
 public:
-//    ExpressionFactory(
+    //ExpressionFactory(CommandDataBase &db);
 
     Expression *create(list<string> tokens);
 

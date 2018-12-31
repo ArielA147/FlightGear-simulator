@@ -24,6 +24,8 @@ public:
     void setLeftValue(Expression *leftValue);
 
     void setRightValue(Expression *rightValue);
+
+    ~BinaryExpression();
 };
 
 

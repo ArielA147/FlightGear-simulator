@@ -1,3 +1,7 @@
+//
+// Created by dvir on 12/13/18.
+//
+
 #include "ExpressionFactory.h"
 #include "Number.h"
 #include "Plus.h"
@@ -15,8 +19,14 @@ ExpressionFactory::ExpressionFactory(CommandDataBase &db) {
 }*/
 
 bool isNum(string &token) {
+    bool checkNegative = 0;
     bool showDot = 0;
     for (int i = 0; i < token.length(); i++) {
+        if (!checkNegative){
+            checkNegative = 1;
+            if(token[i] == '-' && token.length() > 1)
+                continue;
+       }
         if (isdigit(token[i])) {
             continue;
         } else if (token[i] == '.' && !showDot) {
@@ -89,7 +99,7 @@ Expression *shuntingYard(list<string> tokens) {
             s.push("--");
             continue;
         }
-            // check if previous string was operator and this string is minus operator.
+        // check if previous string was operator and this string is minus operator.
         else if(op_priority.count(strBefore) && str == "-"){
             strBefore = str;
             s.push("--");
@@ -99,7 +109,7 @@ Expression *shuntingYard(list<string> tokens) {
         // in case of digit, place into fifo.
         if (isNum(str))
             fifo.push_back(str);
-            // in case of invalid operator, throw exaction.
+        // in case of invalid operator, throw exaction.
         else if(!(op_priority.count(str)) && str != ")" )
             throw runtime_error("invalid operator");
         else if (str == ")") {

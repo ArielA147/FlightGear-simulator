@@ -4,6 +4,8 @@
 
 #include "Lexer.h"
 #include <sstream>
+#include <algorithm>
+
 
 
 string Lexer::replaceSubString(string subject, const string &search,
@@ -46,41 +48,80 @@ list<string> Lexer::lexer(string &s, char delimiter) {
 
     string str;
     bool take = false;
-    for(auto& s : tokens){
-        if(take){
-//            if(s!="\""){
-                str +=s;
-//            }
+    for (auto &s : tokens) {
+        if (take) {
+            str += s;
         }
-        if(s == "\"" && !take){
+        if (s == "\"" && !take) {
             take = true;
-            str +=s;
+            str += s;
         }
     }
 
     bool found = false;
     list<string> final_tokens;
-    for(auto & s: tokens){
-        if(s=="\""){
-            if(found){
+
+// appending the "" tothe string back
+    for (list<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {
+        string s = *it;
+        if (s == "\"") {
+            if (found) {
                 final_tokens.push_back(str);
-            }
-            else{
+            } else {
                 found = true;
-         //       final_tokens.push_back(s);
             }
-        }else{
-            if(!found){
+        } else {
+            if (!found) {
                 final_tokens.push_back(s);
             }
         }
     }
+
+    final_tokens =  appendSpecialSings(final_tokens);
+
     return final_tokens;
 }
 
+list<string> Lexer::appendSpecialSings(list<string> tokens) {
 
-//void addingQuotaionMarksToPrint(list<string> fingal_string, string str){
-//    if(str=="print"){
-//
-//    }
-//}
+    list<string> final_tokens;
+
+    string real_sign;
+    vector<string> tmp{"=", "!", "<", ">"};
+
+    for (list<string>::iterator it = tokens.begin(); it != tokens.end(); ++it) {
+
+        string cur_sign = *it;
+        if (++it != tokens.end()) {
+            string next_sign = *(it);
+
+            // checking if the sign is one of those : == != <= >=. if yes will combine the two
+
+            if (next_sign == "=") {
+                if (count(tmp.begin(), tmp.end(), (cur_sign)) == 1) {
+                    real_sign = cur_sign + next_sign;
+                    final_tokens.push_back(real_sign);
+                }else{
+                    final_tokens.push_back(cur_sign);
+                    final_tokens.push_back(next_sign);
+                }
+            } else {
+                --it;
+                bool found = false;
+                for (auto iter = tmp.begin(); iter != tmp.end(); ++iter) {
+                    if (*iter == cur_sign) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (found == false) {
+                    final_tokens.push_back(cur_sign);
+                }
+            }
+        } else {
+            final_tokens.push_back(cur_sign);
+            break;
+        }
+    }
+    return final_tokens;
+}

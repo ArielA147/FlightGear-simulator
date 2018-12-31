@@ -26,7 +26,7 @@ protected:
 
 public:
     virtual void execute(list<string>::iterator &it) = 0;
-    double checkBoolExpression();
+    double checkBoolExpression(list<string> leftExpression, string boolOperator,list<string> rightExpression);
 
 };
 

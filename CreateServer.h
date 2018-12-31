@@ -33,7 +33,13 @@ public:
 
     void execute();
 
-    void settingPathMapWithBuffer(const char *buffer) const;
+    void settingPathMapWithBuffer(const char *buffer);
+
+    void updateDataBase();
+
+    vector<string> getXmlPathKeyByXmlOrder();
+
+    void setXmlPathMap(string key, double value);
 };
 
 

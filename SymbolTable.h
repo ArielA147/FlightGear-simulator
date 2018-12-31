@@ -7,6 +7,9 @@
 
 #include <string>
 #include <map>
+#include <mutex>
+#include <iostream>
+#include "MutexClass.h"
 
 using namespace std;
 
@@ -24,17 +27,35 @@ public:
         return this->symbolTable;
     }
     inline void setValue(string key, double value){
+        //pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
+        //pthread_mutex_lock(mutex);
+//        cout <<"the value of the symbol table db before updateing " + to_string(this->symbolTable[key]) <<endl;
+
         this->symbolTable[key] = value;
+
+//        cout <<"the value of the symbol Table db before updateing " +        to_string(this->symbolTable[key]) <<endl;
+       // pthread_mutex_unlock(mutex);
     }
     inline double getValue(const string &key){
-        if(this->symbolTable.count(key) ==  1)
-            return this->symbolTable[key];
-        else
+       // pthread_mutex_t* mutex = MutexClass::getInstance()->getMutex();
+       // pthread_mutex_lock(mutex);
+        double temp;
+        if(this->symbolTable.count(key) ==  1){
+            temp = this->symbolTable[key];
+            //pthread_mutex_unlock(mutex);
+            return temp;
+        }
+
+        else{
+          // pthread_mutex_unlock(mutex);
             throw runtime_error("var: " + key + "not exists");
+        }
 
     }
 
-
+    ~SymbolTable(){
+        delete  map_instance;
+    }
 };
 
 

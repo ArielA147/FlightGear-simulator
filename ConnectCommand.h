@@ -26,6 +26,7 @@ public:
     // get string variable as ip, portNum as int.
     void execute(list<string>::iterator &it);
 
+    void waitToConnectingInput() const;
 };
 
 

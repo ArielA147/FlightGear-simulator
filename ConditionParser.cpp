@@ -4,8 +4,6 @@
 
 #include "ConditionParser.h"
 
-#define WHILE_CONDITION "while"
-
 /*
 ConditionParser::ConditionParser(CommandDataBase &db) {
     this->db = db;
@@ -15,16 +13,15 @@ ConditionParser::ConditionParser(CommandDataBase &db) {
 */
 
 // check if booleanExpression is equal to true or false.
-double ConditionParser::checkBoolExpression() {
+double ConditionParser::checkBoolExpression(list<string> leftExpression, string boolOperator,
+        list<string> rightExpression) {
     // TODO dinamic allocation, to delete.
     ExpressionFactory factory = ExpressionFactory();
-    Expression *leftExpr = factory.create(this->leftExpression);
-    Expression *rightExpr = factory.create(this->rightExpression);
-    Expression *boolExpression = new BoolExpression(leftExpr, this->boolOperator, rightExpr);
+    Expression *leftExpr = factory.create(leftExpression);
+    Expression *rightExpr = factory.create(rightExpression);
+    Expression *boolExpression = new BoolExpression(leftExpr, boolOperator, rightExpr);
     double result = boolExpression->calculate();
-    //delete leftExpr;
-    //delete rightExpr;
-    //delete boolExpression;
+    delete boolExpression;
     return result;
 
 }
